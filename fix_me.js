@@ -166,13 +166,30 @@ const menu = [
     ],
   },
 ];
-
-// TODO: createTreeView 함수를 재귀(자기 자신을 계속 부르게 함)호출하여 테스트케이스를 통과하세요.
-// GOAL: 최종 결과가 resut.html와 같은 모습으로 나와야 합니다.
-
 const root = document.getElementById('root');
+
 function createTreeView(menu, currentNode) {
   // TODO: createTreeView 함수를 작성하세요.
+  //base : key값으로 children이없는 경우 check,span,ul 없이 li생성 name값 만 넣어라
+  if(!('children' in menu[0])){
+    for(let i of menu){
+      const li =  document.createElement('li')
+      li.textContent=i.name
+      currentNode.append(li)
+    }
+  //재귀 부분
+  }else if('children' in menu[0]){
+    for(let i of menu){
+      const li=document.createElement('li')
+      const span=document.createElement('span')
+      const input=document.createElement('input')
+      const ul=document.createElement('ul')
+      input.setAttribute('type','checkbox')
+      span.textContent=i.name
+      currentNode.append(li)
+      li.append(input,span,ul)
+      createTreeView(i.children,ul)
+    }
+  }
 }
-
 createTreeView(menu, root);
