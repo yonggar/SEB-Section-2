@@ -1,4 +1,4 @@
-/**
+``/**
  * 1. Browser에 존재하는 JSON.stringfy 함수를 직접 구현해 봅니다.
  * JSON.stringfy 함수는 input 값을 JSON 형식으로 변환합니다.
  * 단, undefined와 function은 JSON으로 생략되거나 null로 변환됩니다.
@@ -26,7 +26,37 @@
  * 하지만 이 과제의 목적은 재귀를 공부하는 것이니, 처음부터 구현해봐야겠지요?:
  */
 function stringifyJSON(obj) {
-  // your code goes here
+  //base
+  if(typeof obj==='number'|| obj=== null || typeof obj==='boolean'){
+    return `${obj}`
+  }
+  if(typeof obj === 'string'){
+    return `"${obj}"`
+  }
+//재귀 case
+  if(Array.isArray(obj)){ ///배열일 때
+    if(obj.length===0){
+      return '[]'
+    }else{
+      const arr=[]
+      for(let i of obj){
+        arr.push(stringifyJSON(i))
+    }
+    return `[${arr}]`
+    }
+  }
+  if(Object.keys(obj).length===0){ //객체일 때
+    return '{}'
+  }else{
+    const objarr=[] //객체는 ``로 string화 할 수 없으니 []에 담는다.
+    for(let i in obj){
+      if(typeof obj[i]==='function' ||typeof obj[i]==='undefined') {
+        continue //함수와 undefined는 stringify하지않고 지나간다.
+      }
+      objarr.push(stringifyJSON(i)+':'+stringifyJSON(obj[i]))
+    }
+    return `{${objarr}}`
+  }
 };
 
 // 다음 코드는 결과 제출을 위한 코드입니다. 신경 쓰지 않아도 좋습니다.
